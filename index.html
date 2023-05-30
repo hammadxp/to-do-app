@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>To-Do App</title>
+
+    <!-- style.css -->
+
+    <style>
+      .task {
+        display: flex;
+      }
+
+      .bottom-bar {
+        display: flex;
+        gap: 20px;
+      }
+
+      .task-completed p {
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <button>Create new to-do</button>
+
+    <ul class="tasks">
+      <!-- <li class="task">
+        <input type="checkbox" class="tick" />
+        <p>1. Brush teeth</p>
+      </li> -->
+    </ul>
+
+    <div class="bottom-bar">
+      <div>
+        <button>All</button>
+        <button>Active</button>
+        <button>Completed</button>
+      </div>
+
+      <button>Clear completed</button>
+    </div>
+
+    <div>
+      <p><span class="tasks-total"></span> total tasks</p>
+      <p><span class="tasks-left"></span> tasks left</p>
+      <span>(drag to re-order items)</span>
+    </div>
+
+    <!-- script.js -->
+
+    <script>
+      const tasksList = document.querySelector(".tasks");
+      const tasksTotal = document.querySelector(".tasks-total");
+      const tasksLeft = document.querySelector(".tasks-left");
+
+      const tasksArr = [
+        {
+          text: "Brush teeth",
+          isCompleted: false,
+        },
+        {
+          text: "Eat breakfast",
+          isCompleted: false,
+        },
+        {
+          text: "Take lecture",
+          isCompleted: false,
+        },
+        {
+          text: "Play game",
+          isCompleted: false,
+        },
+        {
+          text: "Watch movie with family",
+          isCompleted: false,
+        },
+      ];
+
+      // Load tasks
+
+      tasksArr.forEach((task, i) => {
+        const markup = `
+          <li class="task">
+            <input type="checkbox" class="tick" />
+            <p>${i + 1}. ${task["text"]}</p>
+          </li>
+        `;
+
+        tasksList.insertAdjacentHTML("beforeend", markup);
+      });
+
+      // Handle task completion
+
+      tasksList.addEventListener("click", function (e) {
+        const btn = e.target.closest(".tick");
+        if (!btn) return;
+
+        const task = btn.parentNode;
+        task.classList.add("task-completed");
+
+        tasksList.appendChild(task);
+
+        calcTasksTotal();
+        calcTasksLeft();
+      });
+
+      // Helper functions
+
+      const calcTasksTotal = function () {
+        tasksTotal.textContent = document.querySelectorAll(".task").length;
+      };
+
+      const calcTasksLeft = function () {
+        tasksLeft.textContent =
+          document.querySelectorAll(".task").length - document.querySelectorAll(".task-completed").length;
+      };
+
+      calcTasksTotal();
+      calcTasksLeft();
+    </script>
+  </body>
+</html>
